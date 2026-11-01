@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>物件實驗頁 — Tactile Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="lab">
+<header class="top">
+  <a class="logo" href="index.html">TACTILE<i>(lab)</i></a>
+  <span class="crumb">物件實驗頁 · Object Lab</span>
+  <nav>
+    <a href="index.html">作品樣板 Works</a>
+    <a href="lab.html" class="on">實驗頁 Lab</a>
+  </nav>
+</header>
+
+<main class="lab-main">
+  <aside class="brush-list" id="brushList"></aside>
+
+  <section class="stage-col">
+    <div class="toolbar">
+      <button class="tbtn on" data-tool="draw" title="筆刷 (B)">筆刷 Draw</button>
+      <button class="tbtn" data-tool="erase" title="橡皮擦 (E)">橡皮擦 Erase</button>
+      <button class="tbtn" data-tool="text" title="文字 (T)">文字 Text</button>
+      <button class="tbtn" id="altBtn" title="按住 Alt 也可暫時切換" hidden>壓痕 Dent</button>
+      <span class="sep"></span>
+      <button class="tbtn" id="mxBtn" title="左右鏡像 (X)">鏡像 ⟷</button>
+      <button class="tbtn" id="myBtn" title="上下鏡像 (Y)">鏡像 ↕</button>
+      <span class="sep"></span>
+      <button class="tbtn" id="undoBtn" title="Ctrl/⌘ Z">復原</button>
+      <button class="tbtn" id="redoBtn" title="Ctrl/⌘ Shift Z">重做</button>
+      <span class="info" id="info"></span>
+    </div>
+    <div class="stage" id="stage">
+      <div class="doc" id="doc">
+        <div class="checker" id="checker"></div>
+        <canvas id="bgCanvas"></canvas>
+        <canvas id="glCanvas"></canvas>
+        <div class="tb-texts" id="texts"></div>
+        <div class="guides" id="guides"><i class="gx" hidden></i><i class="gy" hidden></i></div>
+        <div class="cursor" id="cursor"></div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="side">
+    <div class="tabs">
+      <button data-tab="brush" class="on">筆刷</button>
+      <button data-tab="layers">圖層</button>
+      <button data-tab="text">文字</button>
+      <button data-tab="doc">文件</button>
+    </div>
+
+    <div class="pane on" id="pane-brush"></div>
+
+    <div class="pane" id="pane-layers">
+      <h4>圖層 Layers <span class="label" id="layerCount"></span></h4>
+      <p class="hint">每支筆刷各自一層。點選圖層即可帶回它當時的設定重新調整；修改形體參數會用原本的筆觸重新算繪。</p>
+      <ul class="layers" id="layerList"></ul>
+      <div class="row">
+        <button class="tbtn" id="addLayer">＋ 新圖層</button>
+        <button class="tbtn" id="clearLayer">清空此層</button>
+      </div>
+    </div>
+
+    <div class="pane" id="pane-text">
+      <h4>文字排版 Typography</h4>
+      <p class="hint">切到「文字」工具後可拖曳移動、雙擊直接編輯。所有文字會一起匯出。</p>
+      <div class="row">
+        <button class="tbtn" id="addText">＋ 新增文字</button>
+        <button class="tbtn" id="delText">刪除選取</button>
+      </div>
+      <label class="check"><input type="checkbox" id="textUnder"> 文字放在筆觸下方 (筆觸壓過文字)</label>
+      <div id="textProps"></div>
+    </div>
+
+    <div class="pane" id="pane-doc">
+      <h4>作品樣板 Template</h4>
+      <div class="ctl select"><label>從樣板開始</label><select id="tplSel"></select></div>
+      <p class="hint">樣板的每一條線都是真正的筆觸資料，載入後一樣可以逐層調整、擦除或加畫。</p>
+
+      <h4>畫布 Canvas</h4>
+      <div class="ctl select"><label>尺寸 Size</label>
+        <select id="sizeSel">
+          <option value="1400x900">1400 × 900 橫幅</option>
+          <option value="1200x1200">1200 × 1200 方形</option>
+          <option value="1080x1350">1080 × 1350 直式 4:5</option>
+          <option value="1080x1920">1080 × 1920 限動 9:16</option>
+          <option value="1600x1000">1600 × 1000 寬幅</option>
+          <option value="1240x1754">1240 × 1754 A 系列</option>
+        </select>
+      </div>
+      <div class="ctl color"><label>紙色 Paper</label><input type="color" id="bgColor"></div>
+      <div class="swatches" id="paperSw"></div>
+      <label class="check"><input type="checkbox" id="transparentBg"> 透明背景 (只顯示棋盤)</label>
+
+      <h4>在你的作品上繪製</h4>
+      <p class="hint">上傳海報、照片或版面，畫布會改成該圖片比例，筆觸被裁切在圖框內。</p>
+      <div class="row">
+        <label class="tbtn" style="text-align:center">上傳圖片<input type="file" id="imgIn" accept="image/*" hidden></label>
+        <button class="tbtn" id="imgDel">移除圖片</button>
+      </div>
+      <div class="ctl"><label>圖片不透明度 <span></span></label><input type="range" id="imgOp" min="0" max="1" step="0.01" value="1"><input type="number" id="imgOpN" min="0" max="1" step="0.01" value="1"></div>
+
+      <h4>筆觸手感 Input</h4>
+      <div class="ctl"><label>防手震 Smoothing</label><input type="range" id="smooth" min="0" max="0.95" step="0.01"><input type="number" id="smoothN" min="0" max="0.95" step="0.01"></div>
+
+      <h4>匯出 Export</h4>
+      <label class="check"><input type="checkbox" id="exBg" checked> 含背景 / 圖片</label>
+      <label class="check"><input type="checkbox" id="exText" checked> 含文字</label>
+      <div class="row">
+        <button class="tbtn on" id="exportPng">下載 PNG</button>
+      </div>
+
+      <h4>專案 Project</h4>
+      <p class="hint">自動存在這個瀏覽器。也可以存成 .json 檔帶到別台電腦繼續調整。</p>
+      <div class="row">
+        <button class="tbtn" id="saveJson">存成檔案</button>
+        <label class="tbtn" style="text-align:center">開啟檔案<input type="file" id="loadJson" accept=".json,application/json" hidden></label>
+        <button class="tbtn" id="newDoc">全部清空</button>
+      </div>
+    </div>
+  </aside>
+</main>
+<div class="toast" id="toast"></div>
+
+<script src="js/engine.js"></script>
+<script src="js/brushes.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/lab.js"></script>
+</body>
+</html>
