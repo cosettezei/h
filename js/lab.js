@@ -669,7 +669,8 @@
     // 文字
     $('#addText').onclick = () => {
       pushHistory();
-      st.texts.push({ t: '新文字\nNEW TEXT', x: 0.08, y: 0.08, s: 0.04, f: 'sans', w: 700, c: '#141210', lh: 1.05 });
+      const [r, g, bb] = TB.hexToRgb(st.bg), dark = st.transparent ? false : r * 0.3 + g * 0.59 + bb * 0.11 < 0.5;
+      st.texts.push({ t: '新文字\nNEW TEXT', x: 0.08, y: 0.08, s: 0.04, f: 'sans', w: 700, c: dark ? '#f4f1ea' : '#141210', lh: 1.05 });
       st.selText = st.texts.length - 1; setTool('text'); renderTexts(); buildTextProps(); autosave();
     };
     $('#textUnder').onchange = (e) => { pushHistory(); st.textUnder = e.target.checked; renderTexts(); autosave(); };
