@@ -368,11 +368,26 @@
       const gl = canvas.getContext('webgl2', { premultipliedAlpha: true, preserveDrawingBuffer: true, alpha: true, antialias: false });
       if (!gl) throw new Error('此瀏覽器不支援 WebGL2');
       this.gl = gl;
+      this.w = 0; this.h = 0;
+      this.lost = false;
+      this._init();
+      // GPU 重置 / 分頁回收時 context 會遺失；高度場資料在 CPU，所以恢復後重新上傳即可
+      canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.lost = true; this.onlost && this.onlost(); });
+      canvas.addEventListener('webglcontextrestored', () => {
+        this._init();
+        const w = this.w, h = this.h;
+        this.w = this.h = 0; this.fbo = null;
+        if (w && h) this.resize(w, h);
+        this.lost = false;
+        this.onrestore && this.onrestore();
+      });
+    }
+    _init() {
+      const gl = this.gl;
       this.canFloatFbo = !!gl.getExtension('EXT_color_buffer_float');
       this.blur = program(gl, BLUR_FS);
       this.shade = program(gl, SHADE_FS);
       this.vao = gl.createVertexArray();
-      this.w = 0; this.h = 0;
       this.texCache = new WeakMap();
     }
     resize(w, h) {
@@ -380,7 +395,7 @@
       const gl = this.gl;
       this.canvas.width = w; this.canvas.height = h;
       this.w = w; this.h = h;
-      if (this.fbo) this.fbo.forEach((f) => { gl.deleteFramebuffer(f.fb); gl.deleteTexture(f.tex); });
+      if (this.fbo && !gl.isContextLost()) this.fbo.forEach((f) => { gl.deleteFramebuffer(f.fb); gl.deleteTexture(f.tex); });
       this.fbo = null;
       if (this.canFloatFbo) {
         this.fbo = [0, 1].map(() => {
@@ -428,6 +443,7 @@
     // items: [{raster, shade:{...}, live}], light: {az, el} (度)
     render(items, light) {
       const gl = this.gl, w = this.w, h = this.h;
+      if (this.lost || gl.isContextLost()) return false;
       gl.bindVertexArray(this.vao);
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.viewport(0, 0, w, h);
@@ -478,6 +494,7 @@
         f('uDot', S.dotSize); f('uDensity', S.density); f('uSheet', S.sheet); f('uLive', it.live ? 1 : 0);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
       }
+      return true;
     }
     release(raster) {
       const e = this.texCache.get(raster);
@@ -532,7 +549,8 @@
       TB.rasterLayer(L, r);
       items.push({ raster: r, shade: L.params });
     }
-    R.render(items, light);
+    const ok = R.render(items, light);
+    if (!ok) { items.forEach((it) => R.release(it.raster)); throw new Error('WebGL context 遺失，無法算繪'); }
     const ctx = target.getContext('2d');
     if (!(opts && opts.keep)) ctx.clearRect(0, 0, target.width, target.height);
     ctx.drawImage(R.canvas, 0, 0, target.width, target.height);

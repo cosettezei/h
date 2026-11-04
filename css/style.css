@@ -32,7 +32,7 @@ button, input, select { font: inherit; color: inherit; }
 
 /* ---------- text overlay (共用) ---------- */
 .frame { position: relative; overflow: hidden; container-type: inline-size; }
-.frame > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.frame > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 .tb-texts { position: absolute; inset: 0; pointer-events: none; }
 .tb-text { position: absolute; white-space: pre; outline: none; pointer-events: auto; cursor: text; }
 .tb-text.glow { text-shadow: 0 0 0.25em currentColor, 0 0 0.6em currentColor; }
@@ -104,6 +104,8 @@ body.lab { height: 100vh; height: 100dvh; display: flex; flex-direction: column;
 }
 .tbtn.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .tbtn:disabled { opacity: 0.35; cursor: default; }
+.toolbar .savewarn { margin-left: auto; font-size: 11px; color: var(--accent); white-space: nowrap; cursor: help; }
+.toolbar .savewarn:not([hidden]) + .info { margin-left: 12px; }
 .toolbar .info { margin-left: auto; font-size: 11px; color: var(--mute); letter-spacing: 0.06em; white-space: nowrap; }
 
 .stage { flex: 1; min-height: 0; position: relative; display: grid; place-items: center; overflow: hidden; padding: 18px; }

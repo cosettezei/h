@@ -52,7 +52,7 @@
       if (!L.visible) continue;
       items.push({ raster: ensureRaster(L), shade: L.params, live: L === drawingLayer && L.brush === 'stipple' });
     }
-    renderer.render(items, st.light);
+    return renderer.render(items, st.light);
   }
   let rerasterT = null;
   function scheduleReraster() {
@@ -62,10 +62,12 @@
 
   /* ---------------- 歷史 ---------------- */
   const hist = [], redoStack = [];
+  // 復原快照：圖層 (結構共享 — op 物件不可變) + 文字 + 文件層級狀態 (尺寸、背景、底圖、光源、文字上下)
   const snap = () => ({
     layers: st.layers.map((l) => Object.assign({}, l, { params: Object.assign({}, l.params), ops: l.ops.slice() })),
     active: st.active,
-    texts: JSON.parse(JSON.stringify(st.texts))
+    texts: JSON.parse(JSON.stringify(st.texts)),
+    doc: { w: st.w, h: st.h, bg: st.bg, transparent: st.transparent, image: st.image, imageOpacity: st.imageOpacity, light: Object.assign({}, st.light), textUnder: st.textUnder }
   });
   function pushHistory() {
     hist.push(snap());
@@ -75,12 +77,19 @@
   }
   function restore(s) {
     st.layers = s.layers; st.active = s.active; st.texts = s.texts;
+    if (s.doc) {
+      const d = s.doc;
+      Object.assign(st, { bg: d.bg, transparent: d.transparent, imageOpacity: d.imageOpacity, light: Object.assign({}, d.light), textUnder: d.textUnder });
+      if (d.w !== st.w || d.h !== st.h) { st.w = d.w; st.h = d.h; renderer.resize(st.w, st.h); fit(); }
+      if (d.image !== st.image) setImage(d.image, false);
+    }
+    if (st.selText >= st.texts.length) st.selText = -1;
     for (const id of Array.from(rasters.keys())) if (!st.layers.find((l) => l.id === id)) { renderer.release(rasters.get(id).raster); rasters.delete(id); }
     const L = activeLayer(); if (L) st.brush = L.brush;
     refreshAll();
   }
-  function undo() { if (!hist.length) return; redoStack.push(snap()); restore(hist.pop()); updateUndo(); }
-  function redo() { if (!redoStack.length) return; hist.push(snap()); restore(redoStack.pop()); updateUndo(); }
+  function undo() { if (!hist.length) return; redoStack.push(snap()); restore(hist.pop()); updateUndo(); autosave(); }
+  function redo() { if (!redoStack.length) return; hist.push(snap()); restore(redoStack.pop()); updateUndo(); autosave(); }
   function updateUndo() { $('#undoBtn').disabled = !hist.length; $('#redoBtn').disabled = !redoStack.length; }
 
   /* ---------------- 儲存 ---------------- */
@@ -91,11 +100,24 @@
     active: st.active, brush: st.brush, texts: st.texts, textUnder: st.textUnder
   });
   let saveT = null;
+  function setSaveWarn(msg) {
+    st.saveWarn = msg || '';
+    const el = $('#saveWarn');
+    el.textContent = msg ? '⚠ ' + msg : ''; el.hidden = !msg; el.title = msg ? msg + '。請到「文件 → 存成檔案」保存完整專案。' : '';
+  }
   function autosave() {
     clearTimeout(saveT);
     saveT = setTimeout(() => {
-      try { localStorage.setItem(STORE, JSON.stringify(serial(true))); }
-      catch (e) { try { localStorage.setItem(STORE, JSON.stringify(serial(false))); } catch (e2) { /* 儲存空間不足 */ } }
+      try { localStorage.setItem(STORE, JSON.stringify(serial(true))); if (st.saveWarn) setSaveWarn(''); return; }
+      catch (e) { /* 多半是超過瀏覽器容量 */ }
+      try {
+        const d = serial(false); d.imageDropped = !!st.image;
+        localStorage.setItem(STORE, JSON.stringify(d));
+        if (st.image) { setSaveWarn('底圖太大，未存入自動儲存'); if (!autosave.warned) toast('底圖太大，無法自動儲存 — 請用「存成檔案」保存'); autosave.warned = true; }
+      } catch (e2) {
+        setSaveWarn('自動儲存失敗 (瀏覽器空間不足)');
+        toast('自動儲存失敗：瀏覽器空間不足 — 請用「存成檔案」保存');
+      }
     }, 400);
   }
   function load(data) {
@@ -112,6 +134,7 @@
     st.texts = data.texts || [];
     st.textUnder = !!data.textUnder;
     setImage(data.image || null, false);
+    if (data.imageDropped && !data.image) setTimeout(() => { setSaveWarn('上次的底圖沒有被自動儲存'); toast('上次的底圖因容量不足沒有被自動儲存，請重新放入圖片或開啟專案檔'); }, 600);
   }
 
   /* ---------------- 圖層操作 ---------------- */
@@ -189,8 +212,10 @@
     ctx.clearRect(0, 0, c.width, c.height);
     if (!st.transparent) { ctx.fillStyle = st.bg; ctx.fillRect(0, 0, c.width, c.height); }
     if (imgEl) {
+      // 保持圖片比例填滿畫布 (cover)，畫布比例改變時裁切而不是拉伸
+      const s = Math.max(st.w / imgEl.width, st.h / imgEl.height), iw = imgEl.width * s, ih = imgEl.height * s;
       ctx.globalAlpha = st.imageOpacity;
-      ctx.drawImage(imgEl, 0, 0, st.w, st.h);
+      ctx.drawImage(imgEl, (st.w - iw) / 2, (st.h - ih) / 2, iw, ih);
       ctx.globalAlpha = 1;
     }
     $('#checker').style.display = st.transparent ? '' : 'none';
@@ -588,7 +613,7 @@
   /* ---------------- 匯出 ---------------- */
   async function exportPng() {
     await document.fonts.ready;
-    renderNow();
+    if (renderNow() === false) { toast('繪圖引擎中斷中，沒有匯出 — 請稍候再試'); return; }
     const c = document.createElement('canvas'); c.width = st.w; c.height = st.h;
     const ctx = c.getContext('2d');
     const withText = $('#exText').checked;
@@ -636,8 +661,10 @@
     try { renderer = new TB.Renderer($('#glCanvas')); }
     catch (e) { document.querySelector('.stage').innerHTML = `<p class="hint" style="padding:40px">${e.message}。請改用最新版 Chrome / Safari / Firefox。</p>`; return; }
 
+    renderer.onlost = () => toast('繪圖引擎暫時中斷，正在恢復…');
+    renderer.onrestore = () => { requestRender(); toast('繪圖引擎已恢復'); };
     buildBrushList();
-    PAPERS.forEach((c) => { const b = document.createElement('button'); b.style.background = c; b.title = c; b.onclick = () => { st.bg = c; st.transparent = false; refreshAll(); autosave(); }; $('#paperSw').appendChild(b); });
+    PAPERS.forEach((c) => { const b = document.createElement('button'); b.style.background = c; b.title = c; b.onclick = () => { pushHistory(); st.bg = c; st.transparent = false; refreshAll(); autosave(); }; $('#paperSw').appendChild(b); });
     $('#tplSel').innerHTML = '<option value="">— 選擇樣板 —</option>' + TB.TEMPLATES.map((t) => `<option value="${t.id}">${t.title} · ${t.caption}</option>`).join('');
 
     // 讀取：URL 樣板 > URL 筆刷 > 自動儲存
@@ -679,15 +706,17 @@
     // 文件
     $('#tplSel').onchange = (e) => { if (e.target.value) loadTemplate(e.target.value); e.target.value = ''; };
     $('#sizeSel').onchange = (e) => { pushHistory(); const [w, h] = e.target.value.split('x').map(Number); setDocSize(w, h); refreshAll(); };
+    $('#bgColor').addEventListener('click', pushHistory);
     $('#bgColor').oninput = (e) => { st.bg = e.target.value; st.transparent = false; $('#transparentBg').checked = false; drawBg(); autosave(); };
-    $('#transparentBg').onchange = (e) => { st.transparent = e.target.checked; drawBg(); autosave(); };
+    $('#transparentBg').onchange = (e) => { pushHistory(); st.transparent = e.target.checked; drawBg(); autosave(); };
     $('#imgIn').onchange = (e) => {
       const f = e.target.files[0]; if (!f) return;
       const rd = new FileReader();
       rd.onload = () => { pushHistory(); setImage(rd.result, true); autosave(); toast('圖片已放入，畫布改為圖片比例'); };
       rd.readAsDataURL(f); e.target.value = '';
     };
-    $('#imgDel').onclick = () => { setImage(null); autosave(); };
+    $('#imgDel').onclick = () => { if (!st.image) return; pushHistory(); setImage(null); autosave(); };
+    $('#imgOp').addEventListener('pointerdown', pushHistory); $('#imgOpN').addEventListener('focus', pushHistory);
     const op = (v) => { st.imageOpacity = +v; $('#imgOp').value = $('#imgOpN').value = v; drawBg(); autosave(); };
     $('#imgOp').oninput = (e) => op(e.target.value); $('#imgOpN').onchange = (e) => op(e.target.value);
     const sm = (v) => { st.smooth = +v; $('#smooth').value = $('#smoothN').value = v; autosave(); };
@@ -721,6 +750,7 @@
       else if (k === 'y') { st.my = !st.my; updateMirror(); }
       else if (k === '[' || k === ']') {
         const f = k === ']' ? 1.15 : 1 / 1.15;
+        if (st.tool !== 'erase' && !e.repeat) { const L0 = activeLayer(); if (L0 && L0.brush === st.brush) pushHistory(); }
         if (st.tool === 'erase') st.er = Math.max(2, Math.min(150, st.er * f));
         else { const L = activeLayer(); if (L && L.brush === st.brush) { L.params.size = Math.max(0.5, Math.min(80, L.params.size * f)); L.rev = nextRev(); scheduleReraster(); } }
         buildBrushPane();
@@ -735,5 +765,5 @@
   }
 
   init();
-  window.__lab = { st, renderNow, loadTemplate };
+  window.__lab = { st, renderNow, loadTemplate, undo, redo };
 })();
