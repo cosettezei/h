@@ -1,0 +1,1417 @@
+{
+ "env": {
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "maxTexture": 8192,
+  "maxRenderbuffer": 8192,
+  "floatFbo": true,
+  "browserVersion": "153.0.8010.12",
+  "git": "239320e",
+  "date": "2026-11-04T22:14:50.699Z"
+ },
+ "results": [
+  {
+   "id": "E1",
+   "module": "筆刷切換",
+   "title": "15 支筆刷對 10 種固定筆觸都產生形體",
+   "status": "PASS",
+   "steps": [
+    "以固定資料集 (10 型態、14 筆) 對每支筆刷呼叫 TB.rasterLayer",
+    "統計每格高度 > 0.5px 的像素數"
+   ],
+   "expected": "15×10 格全部有形體 (極短筆觸也應留下痕跡)",
+   "actual": "150/150 格都有形體",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": [
+    {
+     "id": "ceramic",
+     "cov": [
+      5386,
+      9876,
+      7821,
+      11886,
+      30660,
+      45084,
+      20862,
+      23599,
+      339,
+      49092
+     ]
+    },
+    {
+     "id": "stone",
+     "cov": [
+      5604,
+      11900,
+      8488,
+      13245,
+      32526,
+      50090,
+      23974,
+      24099,
+      296,
+      52034
+     ]
+    },
+    {
+     "id": "metal",
+     "cov": [
+      3730,
+      6650,
+      5129,
+      7642,
+      22508,
+      28716,
+      18193,
+      18424,
+      290,
+      44143
+     ]
+    },
+    {
+     "id": "emboss",
+     "cov": [
+      2534,
+      4468,
+      3434,
+      6036,
+      13979,
+      26225,
+      9425,
+      15717,
+      86,
+      29318
+     ]
+    },
+    {
+     "id": "paste",
+     "cov": [
+      5132,
+      9108,
+      7089,
+      10338,
+      29444,
+      41179,
+      21287,
+      21934,
+      287,
+      48921
+     ]
+    },
+    {
+     "id": "foam",
+     "cov": [
+      2766,
+      4832,
+      3660,
+      5515,
+      16340,
+      20901,
+      15074,
+      14665,
+      172,
+      38587
+     ]
+    },
+    {
+     "id": "volfoam",
+     "cov": [
+      5688,
+      10684,
+      8007,
+      11832,
+      31313,
+      40824,
+      28889,
+      23169,
+      282,
+      55436
+     ]
+    },
+    {
+     "id": "beads",
+     "cov": [
+      1334,
+      2398,
+      1870,
+      3049,
+      7218,
+      14056,
+      5165,
+      9177,
+      228,
+      18055
+     ]
+    },
+    {
+     "id": "sand",
+     "cov": [
+      3419,
+      5918,
+      4775,
+      7488,
+      17911,
+      29934,
+      9873,
+      19752,
+      523,
+      31766
+     ]
+    },
+    {
+     "id": "stipple",
+     "cov": [
+      5984,
+      11352,
+      8800,
+      13899,
+      32159,
+      51032,
+      21908,
+      24988,
+      364,
+      51023
+     ]
+    },
+    {
+     "id": "porous",
+     "cov": [
+      5318,
+      9830,
+      7805,
+      11092,
+      30380,
+      44109,
+      22170,
+      22625,
+      283,
+      49466
+     ]
+    },
+    {
+     "id": "wire",
+     "cov": [
+      1176,
+      2101,
+      1608,
+      2831,
+      6472,
+      12701,
+      4579,
+      8196,
+      74,
+      16770
+     ]
+    },
+    {
+     "id": "thorns",
+     "cov": [
+      1344,
+      2470,
+      1903,
+      3291,
+      8046,
+      15393,
+      5750,
+      9245,
+      30,
+      19404
+     ]
+    },
+    {
+     "id": "laurel",
+     "cov": [
+      3715,
+      6218,
+      4821,
+      8075,
+      18857,
+      34008,
+      11493,
+      19583,
+      282,
+      34215
+     ]
+    },
+    {
+     "id": "clay",
+     "cov": [
+      5572,
+      13586,
+      9077,
+      14013,
+      34628,
+      51843,
+      26873,
+      24898,
+      330,
+      54590
+     ]
+    }
+   ],
+   "ms": 670
+  },
+  {
+   "id": "E2",
+   "module": "材質引擎",
+   "title": "相同輸入重算兩次結果完全一致 (可重現)",
+   "status": "PASS",
+   "steps": [
+    "同一筆刷 / 種子 / 資料集算兩次高度場",
+    "比較 Float32 位元雜湊"
+   ],
+   "expected": "15/15 雜湊一致",
+   "actual": "15/15 一致",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": [
+    [
+     "ceramic",
+     "c701040c",
+     "c701040c"
+    ],
+    [
+     "stone",
+     "9b45b425",
+     "9b45b425"
+    ],
+    [
+     "metal",
+     "1f1f4630",
+     "1f1f4630"
+    ],
+    [
+     "emboss",
+     "698036c2",
+     "698036c2"
+    ],
+    [
+     "paste",
+     "f9c2c1d0",
+     "f9c2c1d0"
+    ],
+    [
+     "foam",
+     "d8f623ab",
+     "d8f623ab"
+    ],
+    [
+     "volfoam",
+     "31831624",
+     "31831624"
+    ],
+    [
+     "beads",
+     "857837d4",
+     "857837d4"
+    ],
+    [
+     "sand",
+     "3c71f200",
+     "3c71f200"
+    ],
+    [
+     "stipple",
+     "0ef3bec6",
+     "0ef3bec6"
+    ],
+    [
+     "porous",
+     "32fb3cd7",
+     "32fb3cd7"
+    ],
+    [
+     "wire",
+     "9ad9dc59",
+     "9ad9dc59"
+    ],
+    [
+     "thorns",
+     "8e403b4e",
+     "8e403b4e"
+    ],
+    [
+     "laurel",
+     "4c5050fc",
+     "4c5050fc"
+    ],
+    [
+     "clay",
+     "017d2c3c",
+     "017d2c3c"
+    ]
+   ],
+   "ms": 1477
+  },
+  {
+   "id": "E3",
+   "module": "筆觸輸入",
+   "title": "即時分段繪製與重播的高度場一致",
+   "status": "PASS",
+   "steps": [
+    "把每筆以隨機 1–6 點的小段餵入 StrokeSession (模擬指標事件)",
+    "與一次重播比較"
+   ],
+   "expected": "完全相同 — 否則畫完後重新開啟圖層形體會「跳動」",
+   "actual": "15/15 位元相同",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": [
+    {
+     "id": "ceramic",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "stone",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "metal",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "emboss",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "paste",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "foam",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "volfoam",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "beads",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "sand",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "stipple",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "porous",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "wire",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "thorns",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "laurel",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    },
+    {
+     "id": "clay",
+     "equal": true,
+     "diff": 0,
+     "maxd": 0
+    }
+   ],
+   "ms": 1599
+  },
+  {
+   "id": "E4",
+   "module": "材質引擎",
+   "title": "15 支筆刷基準圖 (固定資料集)",
+   "status": "PASS",
+   "steps": [
+    "1200×800、預設參數、光源 225°/42°、各筆刷 paper 底色",
+    "輸出 PNG + 參數 JSON"
+   ],
+   "expected": "每支筆刷一張可比對的基準圖",
+   "actual": "15 張；渲染時間 (SwiftShader) ceramic:81 stone:29 metal:54 emboss:19 paste:59 foam:24 volfoam:60 beads:12 sand:45 stipple:70 porous:36 wire:17 thorns:22 laurel:51 clay:77 ms",
+   "evidence": [
+    "tests/out/brushes/*.png",
+    "tests/out/brush-params.json"
+   ],
+   "impact": "",
+   "notes": "只證明「能顯示」，不代表材質品質已驗收 (見 Phase C)。",
+   "ms": 10562
+  },
+  {
+   "id": "E5",
+   "module": "效能",
+   "title": "高度場生成時間 / 記憶體估算",
+   "status": "PASS",
+   "steps": [
+    "每支筆刷算固定資料集 3 次取中位數",
+    "另以 long (1949 點) 單筆測最慢情況",
+    "以文件尺寸估算每層記憶體"
+   ],
+   "expected": "建立基準數字 (無通過門檻，供之後比較)",
+   "actual": "資料集: ceramic 70.7, stone 31, metal 53.8, emboss 18.5, paste 60, foam 23.8, volfoam 57.5, beads 5.4, sand 41.2, stipple 59.1, porous 27.3, wire 13.7, thorns 14.2, laurel 42.1, clay 75 ms。長筆觸最慢 clay。1400×900 每層 CPU 高度場 9.6MB + 堆疊快照 4.8MB，GPU 紋理 9.6MB；共用模糊 FBO 38.5MB",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": {
+    "rows": [
+     {
+      "id": "ceramic",
+      "fixtureMs": 70.7,
+      "longStrokeMs": 21.3
+     },
+     {
+      "id": "stone",
+      "fixtureMs": 31,
+      "longStrokeMs": 13
+     },
+     {
+      "id": "metal",
+      "fixtureMs": 53.8,
+      "longStrokeMs": 17.9
+     },
+     {
+      "id": "emboss",
+      "fixtureMs": 18.5,
+      "longStrokeMs": 8.9
+     },
+     {
+      "id": "paste",
+      "fixtureMs": 60,
+      "longStrokeMs": 25.2
+     },
+     {
+      "id": "foam",
+      "fixtureMs": 23.8,
+      "longStrokeMs": 11.2
+     },
+     {
+      "id": "volfoam",
+      "fixtureMs": 57.5,
+      "longStrokeMs": 17.6
+     },
+     {
+      "id": "beads",
+      "fixtureMs": 5.4,
+      "longStrokeMs": 4
+     },
+     {
+      "id": "sand",
+      "fixtureMs": 41.2,
+      "longStrokeMs": 20
+     },
+     {
+      "id": "stipple",
+      "fixtureMs": 59.1,
+      "longStrokeMs": 19.3
+     },
+     {
+      "id": "porous",
+      "fixtureMs": 27.3,
+      "longStrokeMs": 12.5
+     },
+     {
+      "id": "wire",
+      "fixtureMs": 13.7,
+      "longStrokeMs": 7
+     },
+     {
+      "id": "thorns",
+      "fixtureMs": 14.2,
+      "longStrokeMs": 7.1
+     },
+     {
+      "id": "laurel",
+      "fixtureMs": 42.1,
+      "longStrokeMs": 16.3
+     },
+     {
+      "id": "clay",
+      "fixtureMs": 75,
+      "longStrokeMs": 28.1
+     }
+    ],
+    "perLayer1400x900": {
+     "cpuHeight": 10080000,
+     "cpuStackBase": 5040000,
+     "gpuTexture": 10080000
+    },
+    "sharedFbo1400x900": 40320000
+   },
+   "ms": 2058
+  },
+  {
+   "id": "E6",
+   "module": "鏡像",
+   "title": "水平 / 垂直 / 四向鏡像的對稱誤差",
+   "status": "PASS",
+   "steps": [
+    "600×400 畫布畫一筆 S 曲線，分別 mx / my / mx+my",
+    "逐像素比較 h(x,y) 與鏡像位置"
+   ],
+   "expected": "最大誤差 ≈ 0 (浮點誤差內)",
+   "actual": "最大誤差 0px (clay mx=1 my=1)；不對稱像素比例超過 0.1% 的組合: 無",
+   "evidence": [],
+   "impact": "",
+   "notes": "若有誤差，來自鏡像軸附近原筆觸與鏡像筆觸互相重疊時，非交換運算 (CARVE/DENT) 的先後順序。",
+   "data": [
+    {
+     "id": "ceramic",
+     "mx": 1,
+     "my": 0,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 14416
+    },
+    {
+     "id": "ceramic",
+     "mx": 0,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 13392
+    },
+    {
+     "id": "ceramic",
+     "mx": 1,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 26784
+    },
+    {
+     "id": "laurel",
+     "mx": 1,
+     "my": 0,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 9412
+    },
+    {
+     "id": "laurel",
+     "mx": 0,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 8940
+    },
+    {
+     "id": "laurel",
+     "mx": 1,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 17880
+    },
+    {
+     "id": "sand",
+     "mx": 1,
+     "my": 0,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 9122
+    },
+    {
+     "id": "sand",
+     "mx": 0,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 8746
+    },
+    {
+     "id": "sand",
+     "mx": 1,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 17492
+    },
+    {
+     "id": "clay",
+     "mx": 1,
+     "my": 0,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 17168
+    },
+    {
+     "id": "clay",
+     "mx": 0,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 15570
+    },
+    {
+     "id": "clay",
+     "mx": 1,
+     "my": 1,
+     "maxd": 0,
+     "asymPixels": 0,
+     "coveredPixels": 31140
+    }
+   ],
+   "ms": 108
+  },
+  {
+   "id": "E7",
+   "module": "橡皮擦",
+   "title": "擦除切到形體，修改形體參數後擦除仍保留",
+   "status": "PASS",
+   "steps": [
+    "ceramic 水平線 (600×400)",
+    "加一筆 erase op 垂直穿過中段",
+    "量擦除帶中心高度",
+    "把 size 改成 2 倍重算，再量一次"
+   ],
+   "expected": "擦除帶中心高度 ≈ 0；改參數後仍 ≈ 0；擦除帶以外保持原高度",
+   "actual": "擦除帶中心 0.000 → 改參數後 0.000；保留區 19.3 → 32.2px；切口外緣 40.2px",
+   "evidence": [],
+   "impact": "",
+   "notes": "因為擦除是按筆觸順序重播，所以「改參數後重新生成」時切口仍在。限制：擦除半徑以像素記錄，不隨筆刷粗細改變。",
+   "data": {
+    "a": {
+     "cut": 0,
+     "keep": 19.257123947143555
+    },
+    "b": {
+     "cut": 0,
+     "keep": 32.15083312988281,
+     "edge": 40.193546295166016
+    }
+   },
+   "ms": 14
+  },
+  {
+   "id": "E8",
+   "module": "材質引擎",
+   "title": "多層混合順序與材質不互相污染",
+   "status": "PASS",
+   "steps": [
+    "A: ceramic 紅色、metal=1；B: ceramic 藍色、metal=0，兩層在中央重疊",
+    "比較 B 單獨渲染與 [A,B] 合成時，B 覆蓋區的像素",
+    "互換順序看重疊點顏色是否交換"
+   ],
+   "expected": "B 在上方時重疊點像素 = B 單獨渲染；互換後重疊點變成 A 的顏色",
+   "actual": "B 單獨 0,0,183,255 / A下B上 0,0,183,255 / B下A上 61,0,0,255",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": {
+    "onlyB": [
+     0,
+     0,
+     183,
+     255
+    ],
+    "AB": [
+     0,
+     0,
+     183,
+     255
+    ],
+    "BA": [
+     61,
+     0,
+     0,
+     255
+    ]
+   },
+   "ms": 671
+  },
+  {
+   "id": "E9",
+   "module": "匯出",
+   "title": "透明背景邊緣是否有暗邊 (premultiplied 錯誤)",
+   "status": "PASS",
+   "steps": [
+    "ceramic 白色筆觸渲染到透明 2D canvas",
+    "取 0<alpha<255 的邊緣像素，比較其還原後顏色與內部顏色"
+   ],
+   "expected": "邊緣像素的 RGB (un-premultiplied) 接近筆觸本色，不應明顯偏黑",
+   "actual": "邊緣平均亮度 169.8 (n=582) / 內部 164",
+   "evidence": [],
+   "impact": "",
+   "notes": "材質本身邊緣會因法線傾斜而變暗，這項只抓「明顯黑邊」。",
+   "data": {
+    "edgeLum": 169.8,
+    "innerLum": 164,
+    "edgeN": 582
+   },
+   "ms": 139
+  },
+  {
+   "id": "E10",
+   "module": "材質引擎",
+   "title": "WebGL context lost 後能否恢復",
+   "status": "FAIL",
+   "steps": [
+    "在實驗頁 renderer 上呼叫 WEBGL_lose_context.loseContext()",
+    "restoreContext()",
+    "重新渲染並讀取像素"
+   ],
+   "expected": "恢復後畫面重新出現，不丟失作品",
+   "actual": "恢復後非透明像素 0，錯誤: none，gl.getError=37442",
+   "evidence": [],
+   "impact": "真實裝置在切換分頁、GPU 重置、記憶體不足時會發生；目前程式碼沒有 webglcontextlost / restored 處理。",
+   "notes": "",
+   "data": {
+    "before": "1c88e90e",
+    "after": "9522f1c5",
+    "nonTransparent": 0,
+    "err": null,
+    "glError": 37442
+   },
+   "ms": 1823
+  },
+  {
+   "id": "U1",
+   "module": "筆觸輸入",
+   "title": "實際指標事件：連續 / 快速 / 慢速 / 轉折 / 停筆",
+   "status": "PASS",
+   "steps": [
+    "ceramic：慢速波浪 (每點間隔 40ms)",
+    "快速直線 (無延遲)",
+    "急轉折 Z 字",
+    "停筆：按住不動 400ms 後繼續",
+    "比較即時畫面與強制重算後畫面雜湊"
+   ],
+   "expected": "4 筆全部記錄；停筆不產生錯誤；即時結果 = 重播結果",
+   "actual": "筆數 4；每筆點數 [[20,3,4,3]]；即時=重播: true；頁面錯誤 0",
+   "evidence": [
+    "tests/out/U1.png"
+   ],
+   "impact": "",
+   "notes": "",
+   "data": {
+    "ops": [
+     [
+      20,
+      3,
+      4,
+      3
+     ]
+    ],
+    "live": "dcea03d6",
+    "replay": "dcea03d6"
+   },
+   "ms": 6527
+  },
+  {
+   "id": "U2",
+   "module": "筆刷切換",
+   "title": "介面上逐一切換 15 支筆刷並下筆",
+   "status": "PASS",
+   "steps": [
+    "點左側筆刷 → 在畫布畫一筆 (15 次)"
+   ],
+   "expected": "15 個圖層，各 1 筆，筆刷 ID 對應",
+   "actual": "15 層：ceramic×1 stone×1 metal×1 emboss×1 paste×1 foam×1 volfoam×1 beads×1 sand×1 stipple×1 porous×1 wire×1 thorns×1 laurel×1 clay×1；錯誤 0",
+   "evidence": [
+    "tests/out/U2.png"
+   ],
+   "impact": "",
+   "notes": "",
+   "ms": 126457
+  },
+  {
+   "id": "U3",
+   "module": "圖層",
+   "title": "新增 / 刪除 / 隱藏 / 排序 / 複製 / 重新編輯",
+   "status": "PASS",
+   "steps": [
+    "畫 ceramic、beads 兩層",
+    "下移、隱藏、複製、選取重新編輯 size、刪除、新增"
+   ],
+   "expected": "每項操作狀態正確、ID 不衝突、重新編輯會重算形體",
+   "actual": "{\"orderOk\":true,\"hideOk\":true,\"dupOk\":true,\"reeditOk\":true,\"delOk\":true,\"addOk\":true} | 初始 ceramic>beads | 下移後 beads>ceramic | 隱藏 true,false | 複製後 beads/1 beads/1 ceramic/1",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": [
+    "初始 ceramic>beads",
+    "下移後 beads>ceramic",
+    "隱藏 true,false",
+    "複製後 beads/1 beads/1 ceramic/1"
+   ],
+   "ms": 6239
+  },
+  {
+   "id": "U4",
+   "module": "復原",
+   "title": "B3 連續操作：繪製→形體→材質→複製→隱藏→復原×5→重做×5→儲存→重新載入",
+   "status": "PARTIAL",
+   "steps": [
+    "0 空白",
+    "1 繪製",
+    "2 形體 size=28",
+    "3 材質 color",
+    "4 複製圖層",
+    "5 隱藏",
+    "復原 ×5",
+    "重做 ×5",
+    "等待自動儲存",
+    "重新整理"
+   ],
+   "expected": "每次復原依序回到前一狀態；重做回到最終狀態；重新整理後資料與畫面一致；ID 不衝突",
+   "actual": "{\"undoMatches\":[true,true,true,true,true],\"redoOk\":true,\"redoPixelsOk\":true,\"reloadDataOk\":false,\"reloadPixelsOk\":false} 差異: .layers.0: {\"id\":\"Lmw2ogdaf1\",\"name\":\"釉面陶瓷\",\"brush\":\"ceramic\",\"visible\":true,\"params\":{\"color\":\"#ebe7df\",\"opacity\":1,\"blur\":3,\"thr\":0.8,\"soft\":0.8,\"relief\":1,\"amb\":0.22,\"spec\":1.1,\"shine\":70,\"metal\":0,\"envTop\":\"#ffffff\",\"envMid\":\"#6d7480\",\"envBot\":\"#15171b\",\"grain\":0,\"grainSize\":1,\"grainLit\":0,\"holes\":0,\"holeScale\":12,\"holeSize\":0.5,\"bubbles\":0,\"shadow\":0.35,\"shadowDist\":8,\"stipple\":0,\"dotSize\":2,\"density\":1,\"sheet\":0,\"size\":16,\"height\":1,\"spacing\":0.18,\"speedRef\":1.2,\"slowGrow\":0.6,\"wobble\":0.18,\"stack\":0.15},\"ops\":[{\"n\":10,\"seed\":353534105,\"erase\":false,\"mx\":false,\"my\":false,\"x0\":60,\"y0\":160}]} → undefined ; .layers.1: {\"id\":\"Lmw2ogeya2\",\"name\":\"釉面陶瓷 複本\",\"brush\":\"ceramic\",\"visible\":false,\"params\":{\"color\":\"#ebe7df\",\"opacity\":1,\"blur\":3,\"thr\":0.8,\"soft\":0.8,\"relief\":1,\"amb\":0.22,\"spec\":1.1,\"shine\":70,\"metal\":0,\"envTop\":\"#ffffff\",\"envMid\":\"#6d7480\",\"envBot\":\"#15171b\",\"grain\":0,\"grainSize\":1,\"grainLit\":0,\"holes\":0,\"holeScale\":12,\"holeSize\":0.5,\"bubbles\":0,\"shadow\":0.35,\"shadowDist\":8,\"stipple\":0,\"dotSize\":2,\"density\":1,\"sheet\":0,\"size\":16,\"height\":1,\"spacing\":0.18,\"speedRef\":1.2,\"slowGrow\":0.6,\"wobble\":0.18,\"stack\":0.15},\"ops\":[{\"n\":10,\"seed\":353534105,\"erase\":false,\"mx\":false,\"my\":false,\"x0\":60,\"y0\":160}]} → undefined",
+   "evidence": [],
+   "impact": "",
+   "notes": "「移動筆觸」目前沒有對應功能 (單筆觸編輯不存在)，此步驟無法執行 → 見 B2。",
+   "diff": [
+    ".layers.0: {\"id\":\"Lmw2ogdaf1\",\"name\":\"釉面陶瓷\",\"brush\":\"ceramic\",\"visible\":true,\"params\":{\"color\":\"#ebe7df\",\"opacity\":1,\"blur\":3,\"thr\":0.8,\"soft\":0.8,\"relief\":1,\"amb\":0.22,\"spec\":1.1,\"shine\":70,\"metal\":0,\"envTop\":\"#ffffff\",\"envMid\":\"#6d7480\",\"envBot\":\"#15171b\",\"grain\":0,\"grainSize\":1,\"grainLit\":0,\"holes\":0,\"holeScale\":12,\"holeSize\":0.5,\"bubbles\":0,\"shadow\":0.35,\"shadowDist\":8,\"stipple\":0,\"dotSize\":2,\"density\":1,\"sheet\":0,\"size\":16,\"height\":1,\"spacing\":0.18,\"speedRef\":1.2,\"slowGrow\":0.6,\"wobble\":0.18,\"stack\":0.15},\"ops\":[{\"n\":10,\"seed\":353534105,\"erase\":false,\"mx\":false,\"my\":false,\"x0\":60,\"y0\":160}]} → undefined",
+    ".layers.1: {\"id\":\"Lmw2ogeya2\",\"name\":\"釉面陶瓷 複本\",\"brush\":\"ceramic\",\"visible\":false,\"params\":{\"color\":\"#ebe7df\",\"opacity\":1,\"blur\":3,\"thr\":0.8,\"soft\":0.8,\"relief\":1,\"amb\":0.22,\"spec\":1.1,\"shine\":70,\"metal\":0,\"envTop\":\"#ffffff\",\"envMid\":\"#6d7480\",\"envBot\":\"#15171b\",\"grain\":0,\"grainSize\":1,\"grainLit\":0,\"holes\":0,\"holeScale\":12,\"holeSize\":0.5,\"bubbles\":0,\"shadow\":0.35,\"shadowDist\":8,\"stipple\":0,\"dotSize\":2,\"density\":1,\"sheet\":0,\"size\":16,\"height\":1,\"spacing\":0.18,\"speedRef\":1.2,\"slowGrow\":0.6,\"wobble\":0.18,\"stack\":0.15},\"ops\":[{\"n\":10,\"seed\":353534105,\"erase\":false,\"mx\":false,\"my\":false,\"x0\":60,\"y0\":160}]} → undefined"
+   ],
+   "data": {
+    "undoMatches": [
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "redoOk": true,
+    "redoPixelsOk": true,
+    "reloadDataOk": false,
+    "reloadPixelsOk": false
+   },
+   "ms": 6987
+  },
+  {
+   "id": "U5",
+   "module": "復原",
+   "title": "改畫布尺寸 / 載入樣板 / 放入圖片後按復原",
+   "status": "FAIL",
+   "steps": [
+    "畫一筆 → 改尺寸 1200×1200 → 復原",
+    "載入樣板 → 復原",
+    "改光源 → 復原",
+    "按 ] 放大筆刷 → 復原"
+   ],
+   "expected": "每次復原都回到操作前 (尺寸 + 筆觸座標 + 背景 + 光源 + 參數一致)",
+   "actual": "{\"resizeOk\":false,\"tplOk\":false,\"lightOk\":false} {\"resize\":{\"before\":[600,400,60],\"resized\":[1200,1200,120],\"undone\":[1200,1200,60]},\"tplUndo\":[1200,820,\"#aeb6c8\",1],\"light\":false,\"key\":[16,null]}",
+   "evidence": [],
+   "impact": "復原後筆觸座標屬於舊尺寸、畫布卻是新尺寸 → 作品錯位；且不可再復原回正確狀態。",
+   "notes": "",
+   "data": {
+    "resize": {
+     "before": [
+      600,
+      400,
+      60
+     ],
+     "resized": [
+      1200,
+      1200,
+      120
+     ],
+     "undone": [
+      1200,
+      1200,
+      60
+     ]
+    },
+    "tplUndo": [
+     1200,
+     820,
+     "#aeb6c8",
+     1
+    ],
+    "light": false,
+    "key": [
+     16,
+     null
+    ]
+   },
+   "ms": 4862
+  },
+  {
+   "id": "U6",
+   "module": "鏡像 / 橡皮擦",
+   "title": "介面：鏡像旗標寫入筆觸；橡皮擦與之後的參數重新編輯",
+   "status": "PASS",
+   "steps": [
+    "開 mx+my 畫一筆",
+    "橡皮擦穿過",
+    "回筆刷改 size"
+   ],
+   "expected": "第一筆 mx=my=true；擦除 op 存在並改變畫面；改 size 後兩個 op 都保留",
+   "actual": "[{\"n\":10,\"seed\":868809607,\"erase\":false,\"mx\":true,\"my\":true,\"x0\":30,\"y0\":100},{\"n\":2,\"seed\":659801386,\"erase\":true,\"mx\":false,\"my\":false,\"x0\":150,\"y0\":20}] 畫面變化:true",
+   "evidence": [
+    "tests/out/U6.png"
+   ],
+   "impact": "",
+   "notes": "",
+   "ms": 6687
+  },
+  {
+   "id": "U7",
+   "module": "文字",
+   "title": "新增 / 編輯 / 拖曳 / 旋轉 / 字距 / 上下關係",
+   "status": "PARTIAL",
+   "steps": [
+    "新增文字、改內容、旋轉 30、字距 0.1、拖曳、勾選文字在下方、切回筆刷、復原"
+   ],
+   "expected": "各屬性寫入；拖曳改變 x/y；文字在下方時 z-index 低於筆觸；復原可撤回最後操作",
+   "actual": "text={\"t\":\"測試 TEXT\\n第二行\",\"x\":0.197096018735363,\"y\":0.16787346221441124,\"s\":0.04,\"f\":\"sans\",\"w\":700,\"c\":\"#141210\",\"lh\":1.05,\"r\":30,\"ls\":0.1} 下方模式 zIndex=0；復原後 textUnder=true",
+   "evidence": [],
+   "impact": "",
+   "notes": "contenteditable 直接雙擊編輯未自動化 (headless 選取行為不可靠)，以側欄 textarea 驗證。",
+   "data": {
+    "t": {
+     "t": "測試 TEXT\n第二行",
+     "x": 0.197096018735363,
+     "y": 0.16787346221441124,
+     "s": 0.04,
+     "f": "sans",
+     "w": 700,
+     "c": "#141210",
+     "lh": 1.05,
+     "r": 30,
+     "ls": 0.1
+    },
+    "z": [
+     "2",
+     "1"
+    ],
+    "z2": "0",
+    "undoTextUnder": true
+   },
+   "ms": 2863
+  },
+  {
+   "id": "U8",
+   "module": "樣板",
+   "title": "9 組樣板載入實驗頁：筆觸為向量資料、可編輯",
+   "status": "PASS",
+   "steps": [
+    "依序 loadTemplate(9 組)",
+    "檢查圖層數、每個 op 有點資料、文字數"
+   ],
+   "expected": "9/9 與樣板規格一致；樣板官方資料 (TB.TEMPLATES) 未被修改",
+   "actual": "tactile:2層/2筆/6字 quiet:2層/2筆/4字 colourways:1層/1筆/3字 sandorange:2層/2筆/4字 emboss:2層/3筆/4字 ornament:1層/2筆/2字 elsewhere:2層/3筆/1字 beads:3層/3筆/3字 relic:3層/4筆/0字 官方資料未變:true",
+   "evidence": [
+    "tests/out/U8-last-template.png"
+   ],
+   "impact": "",
+   "notes": "「另存為作者自己的樣板」功能不存在 → E3 待開發。",
+   "data": [
+    {
+     "id": "tactile",
+     "specLayers": 2,
+     "layers": 2,
+     "ops": 2,
+     "ptsOk": true,
+     "texts": 6,
+     "specTexts": 6,
+     "size": [
+      1200,
+      620
+     ]
+    },
+    {
+     "id": "quiet",
+     "specLayers": 2,
+     "layers": 2,
+     "ops": 2,
+     "ptsOk": true,
+     "texts": 4,
+     "specTexts": 4,
+     "size": [
+      1200,
+      820
+     ]
+    },
+    {
+     "id": "colourways",
+     "specLayers": 1,
+     "layers": 1,
+     "ops": 1,
+     "ptsOk": true,
+     "texts": 3,
+     "specTexts": 3,
+     "size": [
+      640,
+      640
+     ]
+    },
+    {
+     "id": "sandorange",
+     "specLayers": 2,
+     "layers": 2,
+     "ops": 2,
+     "ptsOk": true,
+     "texts": 4,
+     "specTexts": 4,
+     "size": [
+      1200,
+      680
+     ]
+    },
+    {
+     "id": "emboss",
+     "specLayers": 2,
+     "layers": 2,
+     "ops": 3,
+     "ptsOk": true,
+     "texts": 4,
+     "specTexts": 4,
+     "size": [
+      1000,
+      1000
+     ]
+    },
+    {
+     "id": "ornament",
+     "specLayers": 1,
+     "layers": 1,
+     "ops": 2,
+     "ptsOk": true,
+     "texts": 2,
+     "specTexts": 2,
+     "size": [
+      1000,
+      1100
+     ]
+    },
+    {
+     "id": "elsewhere",
+     "specLayers": 2,
+     "layers": 2,
+     "ops": 3,
+     "ptsOk": true,
+     "texts": 1,
+     "specTexts": 1,
+     "size": [
+      1000,
+      1000
+     ]
+    },
+    {
+     "id": "beads",
+     "specLayers": 3,
+     "layers": 3,
+     "ops": 3,
+     "ptsOk": true,
+     "texts": 3,
+     "specTexts": 3,
+     "size": [
+      1100,
+      1100
+     ]
+    },
+    {
+     "id": "relic",
+     "specLayers": 3,
+     "layers": 3,
+     "ops": 4,
+     "ptsOk": true,
+     "texts": 0,
+     "specTexts": 0,
+     "size": [
+      1000,
+      1000
+     ]
+    }
+   ],
+   "ms": 12627
+  },
+  {
+   "id": "U9",
+   "module": "樣板",
+   "title": "作品頁 9 組樣板 + 15 支樣本全部算繪、文字修改可保存與還原",
+   "status": "FAIL",
+   "steps": [
+    "捲動觸發延遲算繪，等全部完成",
+    "修改第一組第一段文字 → 重新整理 → 還原文字"
+   ],
+   "expected": "全部 frame 完成且無錯誤；修改在重新整理後仍在；還原回原文",
+   "actual": "27 個 frame；文字可直接點擊: false (被筆觸 canvas 蓋住，需 force)；保存 \"undefined\" → 重新整理 \"TACTILE\" → 還原 \"TACTILE\"；錯誤 0",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": {
+    "frames": 27,
+    "clickable": false,
+    "after": "TACTILE",
+    "reset": "TACTILE",
+    "errors": []
+   },
+   "ms": 15277
+  },
+  {
+   "id": "U10",
+   "module": "儲存",
+   "title": "JSON 匯出 → 新瀏覽器 → 匯入，資料與畫面一致",
+   "status": "PASS",
+   "steps": [
+    "載入 beads 樣板 → 存成檔案",
+    "全新瀏覽器 context 開啟檔案"
+   ],
+   "expected": "資料一致、像素一致；檔案標示格式版本",
+   "actual": "{\"bytes\":39113,\"version\":1,\"dataEqual\":true,\"pixelEqual\":true}",
+   "evidence": [
+    "tests/out/U10-project.json"
+   ],
+   "impact": "",
+   "notes": "字體由 Google Fonts 載入，檔案不含字體；離線或字體載入失敗時沒有提示 (F2)。",
+   "data": {
+    "bytes": 39113,
+    "version": 1,
+    "dataEqual": true,
+    "pixelEqual": true
+   },
+   "ms": 11388
+  },
+  {
+   "id": "U11",
+   "module": "儲存",
+   "title": "自動儲存遇到容量上限時是否提示 (大圖)",
+   "status": "FAIL",
+   "steps": [
+    "上傳 22.1MB 雜訊 PNG",
+    "畫一筆、等待自動儲存",
+    "重新整理"
+   ],
+   "expected": "若圖片存不下，應明確提示作者 (並保留圖片以外的資料)",
+   "actual": "localStorage 內含圖片: false；圖層 1；提示文字: \"圖片已放入，畫布改為圖片比例\"；重新整理後圖片: false",
+   "evidence": [],
+   "impact": "作者重新整理後底圖消失，畫面上沒有任何警告。",
+   "notes": "",
+   "data": {
+    "fileMB": 22.1,
+    "stored": {
+     "image": false,
+     "layers": 1
+    },
+    "toastSeen": "圖片已放入，畫布改為圖片比例",
+    "afterReloadImage": false,
+    "afterLayers": 1
+   },
+   "ms": 12715
+  },
+  {
+   "id": "U12",
+   "module": "圖片",
+   "title": "上傳底圖 → 比例 → 再改畫布尺寸",
+   "status": "PARTIAL",
+   "steps": [
+    "上傳 400×800 棋盤圖",
+    "畫一筆",
+    "改畫布為 1400×900",
+    "量底圖棋盤格的寬高比"
+   ],
+   "expected": "上傳後畫布 = 圖片比例；改尺寸後圖片保持比例 (fit/fill) 不變形",
+   "actual": "上傳後 800×1600；改尺寸後棋盤格寬高比 3.11 (1 = 不變形)",
+   "evidence": [
+    "tests/out/U12.png"
+   ],
+   "impact": "",
+   "notes": "目前沒有底圖縮放 / 位移 / 裁切控制。",
+   "data": {
+    "afterUpload": [
+     800,
+     1600
+    ],
+    "afterResize": [
+     1400,
+     900
+    ],
+    "checkerCell": {
+     "cw": 112,
+     "ch": 36
+    },
+    "stretch": 3.11
+   },
+   "ms": 9271
+  },
+  {
+   "id": "U13",
+   "module": "匯出",
+   "title": "透明 PNG / 含背景 PNG / 文字混合",
+   "status": "PASS",
+   "steps": [
+    "畫一筆 + 一段文字",
+    "匯出：含背景+文字 / 透明+文字 / 透明無文字"
+   ],
+   "expected": "含背景角落 alpha=255；透明角落 alpha=0；有文字比無文字有更多非透明像素；尺寸 = 文件尺寸",
+   "actual": "含背景角落 229,226,218,255；透明角落 0,0,0,0；非透明像素 有字 18725 / 無字 17684；尺寸 600×400",
+   "evidence": [
+    "tests/out/U13-1793830735610.png",
+    "tests/out/U13-1793830736821.png",
+    "tests/out/U13-1793830738032.png"
+   ],
+   "impact": "",
+   "notes": "只有 1× (文件解析度)；沒有 2×/4×/指定尺寸 (F1)。",
+   "data": {
+    "withBg": {
+     "w": 600,
+     "h": 400,
+     "corner": [
+      229,
+      226,
+      218,
+      255
+     ],
+     "opaque": 240000
+    },
+    "transparent": {
+     "w": 600,
+     "h": 400,
+     "corner": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "opaque": 18725
+    },
+    "noText": {
+     "w": 600,
+     "h": 400,
+     "corner": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "opaque": 17684
+    }
+   },
+   "ms": 5166
+  },
+  {
+   "id": "U14",
+   "module": "效能",
+   "title": "多圖層與連續操作：GPU 資源釋放、JS 記憶體",
+   "status": "PASS",
+   "steps": [
+    "加入 30 層 (每層一筆) 並渲染兩次",
+    "透過介面逐一刪除 30 層",
+    "比較紋理數量與 JS heap"
+   ],
+   "expected": "刪除後 GPU 紋理數回到基準；heap 不持續成長",
+   "actual": "紋理 基準 2 → 30 層 32 → 刪除後 2；heap 2.1MB → 67.9MB → 7.9MB；30 層首次渲染 251ms、快取後 1ms (SwiftShader)",
+   "evidence": [],
+   "impact": "",
+   "notes": "刪除後 heap 仍高屬預期：80 步的復原歷史保留了被刪圖層的資料 (結構共享，非洩漏)；但高度場 Float32Array 不在歷史內，應被回收。",
+   "data": {
+    "base": {
+     "tex": 2,
+     "heap": 2224424
+    },
+    "loaded": {
+     "tex": 32,
+     "heap": 71231808
+    },
+    "first": 251.30000000004657,
+    "cached": 0.6000000000931323,
+    "after": {
+     "tex": 2,
+     "heap": 8305419,
+     "layers": 0
+    }
+   },
+   "ms": 27875
+  },
+  {
+   "id": "U15",
+   "module": "材質引擎",
+   "title": "高 DPI (devicePixelRatio=2) 下畫布清晰度",
+   "status": "PARTIAL",
+   "steps": [
+    "DPR=2、1440×900 視窗開啟 1400×900 文件",
+    "比較 canvas 像素與螢幕裝置像素"
+   ],
+   "expected": "顯示時 canvas 像素 ≥ 裝置像素 (不放大)",
+   "actual": "canvas 1400×900，顯示 854×549 CSS px × DPR 2 → 每裝置像素 0.82 個 canvas 像素",
+   "evidence": [],
+   "impact": "",
+   "notes": "畫布形體比例不受顯示縮放影響 (文件座標固定)；低於 1 代表在 Retina 螢幕上被放大而略糊。匯出不受影響。",
+   "data": {
+    "backing": [
+     1400,
+     900
+    ],
+    "css": [
+     854,
+     549
+    ],
+    "dpr": 2,
+    "ratio": 0.82
+   },
+   "ms": 35994
+  },
+  {
+   "id": "U16",
+   "module": "筆觸輸入",
+   "title": "極長筆觸的儲存大小與重算時間",
+   "status": "PASS",
+   "steps": [
+    "合成 20000 點 (≈160 秒連續繪製) 的 paste 筆觸",
+    "量 JSON 大小與完整重算時間"
+   ],
+   "expected": "建立基準：重算 < 1s、可放入 localStorage (≈5MB)",
+   "actual": "JSON 394KB、重算 77ms",
+   "evidence": [],
+   "impact": "",
+   "notes": "",
+   "data": {
+    "points": 20000,
+    "seconds": 160,
+    "jsonKB": 394,
+    "rasterMs": 77
+   },
+   "ms": 1183
+  },
+  {
+   "id": "X1",
+   "module": "跨環境",
+   "title": "Firefox / Safari",
+   "status": "NOT TESTED",
+   "steps": [],
+   "expected": "",
+   "actual": "此環境只安裝 Chromium (/opt/pw-browsers)。Firefox、Safari (WebKit) 沒有測試證據。",
+   "evidence": [],
+   "impact": "",
+   "notes": "WebGL2 + EXT_color_buffer_float + RG32F 紋理：Safari 15+ 理論上支援，但未驗證。contentEditable=\"plaintext-only\" 在 Firefox 不支援，程式碼有 fallback 但未驗證。",
+   "ms": 0
+  }
+ ]
+}
